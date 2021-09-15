@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet author="zhenya" id="lesson4.v.1.0.0">
+
+        <createTable tableName="book">
+            <column name="id" type="SERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="title" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="author">
+            <column name="id" type="SERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="surname" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="author_book">
+            <column name="author_id" type="INT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_author_book_author_id"
+                             foreignKeyName="fk_author_book_author_id" referencedTableName="author" referencedColumnNames="id"/>
+            </column>
+            <column name="book_id" type="INT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_author_book_book_id"
+                             foreignKeyName="fk_author_book_book_id" referencedTableName="book" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="country">
+            <column name="id" type="SERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="city">
+            <column name="id" type="SERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="country_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_city_country_id" referencedTableName="country" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="address">
+            <column name="id" type="SERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="city_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_address_city_id" referencedTableName="city" referencedColumnNames="id"/>
+            </column>
+            <column name="street" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="house_number" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="shop">
+            <column name="id" type="SERIAL">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(55)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_shop_address_id" referencedTableName="address" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="store_warehouse">
+            <column name="shop_id" type="int">
+                <constraints nullable="false" primaryKey="true" foreignKeyName="fk_store_warehouse_shop_id" referencedTableName="shop" referencedColumnNames="id"/>
+            </column>
+            <column name="book_id" type="int">
+                <constraints nullable="false" primaryKey="true" foreignKeyName="fk_store_warehouse_book_id" referencedTableName="book" referencedColumnNames="id"/>
+            </column>
+            <column name="book_quantity" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="book_price" type="DECIMAL">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="receipt">
+            <column name="number" type="varchar(55)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="shop_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_receipt_shop_id" referencedTableName="shop" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="receipt_position">
+            <column name="receipt_id" type="varchar(55)">
+                <constraints primaryKey="true" nullable="false" foreignKeyName="fk_receipt_position_receipt_id" referencedTableName="receipt" referencedColumnNames="number"/>
+            </column>
+            <column name="book_id" type="int">
+                <constraints nullable="false" primaryKey="true" foreignKeyName="fk_receipt_position_book_id" referencedTableName="book" referencedColumnNames="id"/>
+            </column>
+            <column name="book_quantity" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="book_price" type="DECIMAL">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+</databaseChangeLog>
